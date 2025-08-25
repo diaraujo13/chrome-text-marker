@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            width: 280px;
+            min-height: 200px;
+            margin: 0;
+            padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 14px;
+            background-color: #f8f9fa;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .title {
+            margin: 0;
+            color: #1a73e8;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .subtitle {
+            margin: 4px 0 0 0;
+            color: #5f6368;
+            font-size: 12px;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-weight: 500;
+            color: #3c4043;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .color-btn {
+            padding: 12px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            background-color: white;
+            color: #3c4043;
+        }
+        
+        .color-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .color-btn.active {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 1px #1a73e8;
+        }
+        
+        .color-btn.yellow {
+            background-color: rgba(255, 235, 59, 0.3);
+            border-bottom: 3px solid #f9a825;
+        }
+        
+        .color-btn.green {
+            background-color: rgba(76, 175, 80, 0.3);
+            border-bottom: 3px solid #2e7d32;
+        }
+        
+        .color-btn.blue {
+            background-color: rgba(33, 150, 243, 0.3);
+            border-bottom: 3px solid #1565c0;
+        }
+        
+        .color-btn.red {
+            background-color: rgba(244, 67, 54, 0.3);
+            border-bottom: 3px solid #c62828;
+        }
+        
+        .color-btn.purple {
+            background-color: rgba(156, 39, 176, 0.3);
+            border-bottom: 3px solid #6a1b9a;
+        }
+        
+        .color-btn.orange {
+            background-color: rgba(255, 152, 0, 0.3);
+            border-bottom: 3px solid #ef6c00;
+        }
+        
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            background-color: white;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+        }
+        
+        .action-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #bdc1c6;
+        }
+        
+        .action-btn.primary {
+            background-color: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+        
+        .action-btn.primary:hover {
+            background-color: #1557b0;
+        }
+        
+        .action-btn.danger {
+            background-color: #ea4335;
+            color: white;
+            border-color: #ea4335;
+        }
+        
+        .action-btn.danger:hover {
+            background-color: #c5221f;
+        }
+        
+        .shortcuts {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #dadce0;
+        }
+        
+        .shortcut {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 11px;
+            color: #5f6368;
+        }
+        
+        .shortcut-key {
+            background-color: #e8eaed;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">Text Highlighter</h1>
+        <p class="subtitle">Select text and choose a color to highlight</p>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">Highlight Colors</div>
+        <div class="color-grid">
+            <div class="color-btn yellow active" data-color="yellow">Yellow</div>
+            <div class="color-btn green" data-color="green">Green</div>
+            <div class="color-btn blue" data-color="blue">Blue</div>
+            <div class="color-btn red" data-color="red">Red</div>
+            <div class="color-btn purple" data-color="purple">Purple</div>
+            <div class="color-btn orange" data-color="orange">Orange</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">Actions</div>
+        <div class="actions">
+            <button class="action-btn primary" id="highlight-btn">Highlight Selection</button>
+            <button class="action-btn" id="remove-btn">Remove Highlight</button>
+            <button class="action-btn danger" id="clear-all-btn">Clear All Highlights</button>
+        </div>
+    </div>
+    
+    <div class="shortcuts">
+        <div class="section-title">Keyboard Shortcuts</div>
+        <div class="shortcut">
+            <span>Yellow highlight:</span>
+            <span class="shortcut-key">1, M, or Ctrl+Shift+Y</span>
+        </div>
+        <div class="shortcut">
+            <span>Green highlight:</span>
+            <span class="shortcut-key">2 or Ctrl+Shift+G</span>
+        </div>
+        <div class="shortcut">
+            <span>Blue highlight:</span>
+            <span class="shortcut-key">3 or Ctrl+Shift+B</span>
+        </div>
+        <div class="shortcut">
+            <span>Remove highlight:</span>
+            <span class="shortcut-key">0 or Ctrl+Shift+D</span>
+        </div>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>

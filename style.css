@@ -1,0 +1,134 @@
+/* Text Highlighter Styles */
+.text-highlighter-mark {
+    padding: 1px 2px;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    display: inline;
+    line-height: inherit;
+  }
+  
+  .text-highlighter-mark:hover {
+    filter: brightness(0.9);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Color variations */
+  .text-highlighter-mark[data-color="yellow"] {
+    background-color: rgba(255, 235, 59, 0.5) !important;
+    border-bottom: 2px solid #f9a825 !important;
+  }
+  
+  .text-highlighter-mark[data-color="green"] {
+    background-color: rgba(76, 175, 80, 0.5) !important;
+    border-bottom: 2px solid #2e7d32 !important;
+  }
+  
+  .text-highlighter-mark[data-color="blue"] {
+    background-color: rgba(33, 150, 243, 0.5) !important;
+    border-bottom: 2px solid #1565c0 !important;
+  }
+  
+  .text-highlighter-mark[data-color="red"] {
+    background-color: rgba(244, 67, 54, 0.5) !important;
+    border-bottom: 2px solid #c62828 !important;
+  }
+  
+  .text-highlighter-mark[data-color="purple"] {
+    background-color: rgba(156, 39, 176, 0.5) !important;
+    border-bottom: 2px solid #6a1b9a !important;
+  }
+  
+  .text-highlighter-mark[data-color="orange"] {
+    background-color: rgba(255, 152, 0, 0.5) !important;
+    border-bottom: 2px solid #ef6c00 !important;
+  }
+  
+  /* Active state */
+  .text-highlighter-mark--active {
+    animation: highlight-flash 1s ease-in-out;
+  }
+  
+  @keyframes highlight-flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; transform: scale(1.02); }
+  }
+  
+  /* Ensure highlights work well with different text styles */
+  .text-highlighter-mark * {
+    background-color: transparent !important;
+  }
+  
+  /* Force highlights to work on pre, code, and other problematic elements */
+  pre .text-highlighter-mark,
+  code .text-highlighter-mark,
+  .text-highlighter-mark pre,
+  .text-highlighter-mark code {
+    background-color: inherit !important;
+    color: inherit !important;
+    font-family: inherit !important;
+    white-space: inherit !important;
+    display: inline !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  
+  /* Override any background-color resets on pre/code elements */
+  pre .text-highlighter-mark[data-color="yellow"],
+  code .text-highlighter-mark[data-color="yellow"] {
+    background-color: rgba(255, 235, 59, 0.8) !important;
+    border-bottom: 2px solid #f9a825 !important;
+  }
+  
+  pre .text-highlighter-mark[data-color="green"],
+  code .text-highlighter-mark[data-color="green"] {
+    background-color: rgba(76, 175, 80, 0.8) !important;
+    border-bottom: 2px solid #2e7d32 !important;
+  }
+  
+  pre .text-highlighter-mark[data-color="blue"],
+  code .text-highlighter-mark[data-color="blue"] {
+    background-color: rgba(33, 150, 243, 0.8) !important;
+    border-bottom: 2px solid #1565c0 !important;
+  }
+  
+  pre .text-highlighter-mark[data-color="red"],
+  code .text-highlighter-mark[data-color="red"] {
+    background-color: rgba(244, 67, 54, 0.8) !important;
+    border-bottom: 2px solid #c62828 !important;
+  }
+  
+  pre .text-highlighter-mark[data-color="purple"],
+  code .text-highlighter-mark[data-color="purple"] {
+    background-color: rgba(156, 39, 176, 0.8) !important;
+    border-bottom: 2px solid #6a1b9a !important;
+  }
+  
+  pre .text-highlighter-mark[data-color="orange"],
+  code .text-highlighter-mark[data-color="orange"] {
+    background-color: rgba(255, 152, 0, 0.8) !important;
+    border-bottom: 2px solid #ef6c00 !important;
+  }
+  
+  /* Handle syntax highlighting conflicts */
+  .text-highlighter-mark .hljs,
+  .text-highlighter-mark .highlight,
+  .text-highlighter-mark .syntax-highlight {
+    background-color: transparent !important;
+  }
+  
+  /* Force visibility on any element that might hide backgrounds */
+  .text-highlighter-mark {
+    background-clip: padding-box !important;
+    background-origin: padding-box !important;
+    background-attachment: scroll !important;
+    background-repeat: repeat !important;
+    background-size: auto !important;
+  }
+  
+  /* Print styles */
+  @media print {
+    .text-highlighter-mark {
+      background-color: transparent !important;
+      border-bottom: 1px solid #666 !important;
+    }
+  }

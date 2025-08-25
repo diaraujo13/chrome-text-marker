@@ -1,0 +1,50 @@
+{
+    "manifest_version": 3,
+    "name": "Simple Text Highlighter",
+    "version": "1.0",
+    "description": "Highlight text on web pages with different colors",
+    "permissions": [
+      "activeTab",
+      "storage"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"],
+        "css": ["style.css"]
+      }
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html",
+      "default_title": "Text Highlighter"
+    },
+    "commands": {
+      "highlight-yellow": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+Y"
+        },
+        "description": "Highlight with yellow"
+      },
+      "highlight-green": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+G"
+        },
+        "description": "Highlight with green"
+      },
+      "highlight-blue": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+B"
+        },
+        "description": "Highlight with blue"
+      },
+      "remove-highlight": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+D"
+        },
+        "description": "Remove highlight"
+      }
+    }
+  }
