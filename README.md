@@ -24,7 +24,7 @@ Optional: Open the extension details to customize the command shortcuts if you l
 ### Features
 
 - **Instant highlight with number keys (1–9)**
-  - 1: yellow
+  - 1: yellow 
   - 2: green
   - 3: blue
   - 4: fuschia

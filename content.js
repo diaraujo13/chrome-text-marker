@@ -427,45 +427,111 @@ class TextHighlighter {
           } else {
             const tagName = blockElement.tagName.toLowerCase();
             if (tagName === 'li') {
-              // For list items, wrap all child nodes in a span so the text (not the bullet) is highlighted
-              const wrapper = document.createElement('span');
-              wrapper.className = 'text-highlighter-mark';
-              wrapper.setAttribute('data-highlight-id', highlightId);
-              wrapper.setAttribute('data-color', color);
-              wrapper.style.cssText = `
-                background-color: ${this.colors[color].bg}80 !important;
-                border-bottom: 2px solid ${this.colors[color].border} !important;
-                background-clip: padding-box !important;
-                background-origin: padding-box !important;
-                background-attachment: scroll !important;
-                background-repeat: repeat !important;
-                background-size: auto !important;
-                position: relative !important;
-                z-index: 1 !important;
-                display: inline !important;
-                word-wrap: break-word !important;
-                max-width: fit-content !important;
-                width: fit-content !important;
-                cursor: pointer !important;
-              `;
-              wrapper.title = 'Click to remove highlight';
+              // For list items, avoid wrapping block-level children inside inline spans.
+              const hasBlockChildren = Array.from(blockElement.childNodes).some((n) => {
+                return n.nodeType === Node.ELEMENT_NODE && this.isElementBlockLevel(n);
+              });
 
-              // Move all child nodes of the LI into the wrapper
-              while (blockElement.firstChild) {
-                wrapper.appendChild(blockElement.firstChild);
+              if (hasBlockChildren) {
+                // Apply highlight to each block child directly; wrap stray text nodes with spans.
+                const createdWrappers = [];
+                Array.from(blockElement.childNodes).forEach((child) => {
+                  if (child.nodeType === Node.ELEMENT_NODE && this.isElementBlockLevel(child)) {
+                    // Style the block child directly
+                    child.classList.add('text-highlighter-mark');
+                    child.setAttribute('data-highlight-id', highlightId);
+                    child.setAttribute('data-color', color);
+                    child.style.cssText += `
+                      background-color: ${this.colors[color].bg}80 !important;
+                      border-bottom: 2px solid ${this.colors[color].border} !important;
+                      background-clip: padding-box !important;
+                      background-origin: padding-box !important;
+                      background-attachment: scroll !important;
+                      background-repeat: repeat !important;
+                      background-size: auto !important;
+                      position: relative !important;
+                      z-index: 1 !important;
+                      cursor: pointer !important;
+                    `;
+                    child.title = 'Click to remove highlight';
+                  } else if (child.nodeType === Node.TEXT_NODE && child.textContent.trim() !== '') {
+                    // Wrap text nodes with an inline span so the bullet isn't affected
+                    const span = document.createElement('span');
+                    span.className = 'text-highlighter-mark';
+                    span.setAttribute('data-highlight-id', highlightId);
+                    span.setAttribute('data-color', color);
+                    span.style.cssText = `
+                      background-color: ${this.colors[color].bg}80 !important;
+                      border-bottom: 2px solid ${this.colors[color].border} !important;
+                      background-clip: padding-box !important;
+                      background-origin: padding-box !important;
+                      background-attachment: scroll !important;
+                      background-repeat: repeat !important;
+                      background-size: auto !important;
+                      position: relative !important;
+                      z-index: 1 !important;
+                      display: inline !important;
+                      word-wrap: break-word !important;
+                      max-width: fit-content !important;
+                      width: fit-content !important;
+                      cursor: pointer !important;
+                    `;
+                    span.title = 'Click to remove highlight';
+                    child.parentNode.insertBefore(span, child);
+                    span.appendChild(child);
+                    createdWrappers.push(span);
+                  }
+                });
+
+                // Store highlight info once (using the LI as the anchor in XPath if possible)
+                const highlightInfo = {
+                  id: highlightId,
+                  text: originalText,
+                  color: color,
+                  url: window.location.href,
+                  xpath: this.getXPathForElement(blockElement)
+                };
+                this.highlights.set(highlightId, highlightInfo);
+                this.saveHighlight(highlightInfo);
+              } else {
+                // No block children; safe to wrap inline content to avoid bullet coloring
+                const wrapper = document.createElement('span');
+                wrapper.className = 'text-highlighter-mark';
+                wrapper.setAttribute('data-highlight-id', highlightId);
+                wrapper.setAttribute('data-color', color);
+                wrapper.style.cssText = `
+                  background-color: ${this.colors[color].bg}80 !important;
+                  border-bottom: 2px solid ${this.colors[color].border} !important;
+                  background-clip: padding-box !important;
+                  background-origin: padding-box !important;
+                  background-attachment: scroll !important;
+                  background-repeat: repeat !important;
+                  background-size: auto !important;
+                  position: relative !important;
+                  z-index: 1 !important;
+                  display: inline !important;
+                  word-wrap: break-word !important;
+                  max-width: fit-content !important;
+                  width: fit-content !important;
+                  cursor: pointer !important;
+                `;
+                wrapper.title = 'Click to remove highlight';
+
+                while (blockElement.firstChild) {
+                  wrapper.appendChild(blockElement.firstChild);
+                }
+                blockElement.appendChild(wrapper);
+
+                const highlightInfo = {
+                  id: highlightId,
+                  text: originalText,
+                  color: color,
+                  url: window.location.href,
+                  xpath: this.getXPathForElement(wrapper)
+                };
+                this.highlights.set(highlightId, highlightInfo);
+                this.saveHighlight(highlightInfo);
               }
-              blockElement.appendChild(wrapper);
-
-              // Store highlight info
-              const highlightInfo = {
-                id: highlightId,
-                text: originalText,
-                color: color,
-                url: window.location.href,
-                xpath: this.getXPathForElement(wrapper)
-              };
-              this.highlights.set(highlightId, highlightInfo);
-              this.saveHighlight(highlightInfo);
             } else {
               // Add highlight class and data attributes directly to block element
               blockElement.classList.add('text-highlighter-mark');
